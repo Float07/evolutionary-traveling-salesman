@@ -1,5 +1,6 @@
 #include "evo_structs.h"
 #include <stdlib.h>
+#include <math.h>
 
 const int NUM_GENERATIONS = 50;
 const int random_seed = 1337;
@@ -57,6 +58,34 @@ void combina_individuos(const struct route* src1, const struct route* src2, stru
     return;
 }
 
+float distancia_total(const struct route* rota, const struct cities* cidades){
+    float distance = 0;
+
+    int x0, y0, x1, y1;
+    x1 = cidades->x[0];
+    y1 = cidades->y[0];
+    for(int i = 1; i < NUM_CITIES; i++){
+        x0 = x1;
+        y0 = y1;
+        x1 = cidades->x[rota->cities[i]];
+        y1 = cidades->y[rota->cities[i]];
+        distance += sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+    }
+
+    return distance;
+}
+
+struct distancia_individuo{
+    float distancia;
+    int individuo;
+};
+
+int compara_distancias (const struct distancia_individuo* p1, const struct distancia_individuo* p2){
+    if ( p1->distancia >   p2->distancia ) return 1;
+    if ( p1->distancia ==  p2->distancia ) return 0;
+    return -1;
+}
+
 int main(){
     // Guarda espaco para individuos e cidades
     struct generation* geracoes = malloc(NUM_GENERATIONS*sizeof(struct generation));
@@ -70,8 +99,15 @@ int main(){
         rota_aleatoria( &(geracoes[0].individuos[i]) );
     }
 
-    // Loop de evolucao
+    // Calcula distancias e ordena
+    struct distancia_individuo distancias[NUM_INDIVIDUOS];
+    for(int i = 0; i < NUM_INDIVIDUOS; i++){
+        distancias[i].distancia = distancia_total(&geracoes[0].individuos[i], cidades);
+        distancias[i].individuo = i;
+    }
+    qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
 
+    // Loop de evolucao
 
     free(geracoes);
     free(cidades);
