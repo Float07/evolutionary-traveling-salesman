@@ -1,9 +1,12 @@
 #include "evo_structs.h"
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 const int NUM_GENERATIONS = 50;
 const int random_seed = 1337;
+const float OLD_GENERATION_RATIO = 0.5f;
+const float MUTATION_PROB = 0.01f;
 
 typedef char bool;
 
@@ -108,6 +111,31 @@ int main(){
     qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
 
     // Loop de evolucao
+    const int NUM_PRESERVADOS = ceil(NUM_INDIVIDUOS*OLD_GENERATION_RATIO);
+    // Para toda Geracao
+    for(int i = 1; i < NUM_GENERATIONS; i++){
+        // Copia os NUM_PRESERVADOS com menor distancia para a nova geracao
+        for(int j = 0; j < NUM_PRESERVADOS; j++){
+            struct route *src, *dst;
+            src = &geracoes[i-1].individuos[distancias[j].individuo];
+            dst = &geracoes[i].individuos[j];
+            memcpy(dst, src, sizeof(struct route));
+        }
+        // Cria novos individuos com base nos copiados
+        for(int j = NUM_PRESERVADOS; j < NUM_INDIVIDUOS; j++){
+            struct route *p1, *p2, *dst;
+            p1  = &geracoes[i].individuos[rand()%NUM_PRESERVADOS];
+            p2  = &geracoes[i].individuos[rand()%NUM_PRESERVADOS];
+            dst = &geracoes[i].individuos[j];
+            combina_individuos(p1,p2,dst);
+        }
+        // Ordena a nova geracao de acordo com a menor distancia
+        for(int j = 0; j < NUM_INDIVIDUOS; j++){
+        distancias[j].distancia = distancia_total(&geracoes[i].individuos[j], cidades);
+        distancias[j].individuo = j;
+        }
+        qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
+    }
 
     free(geracoes);
     free(cidades);
