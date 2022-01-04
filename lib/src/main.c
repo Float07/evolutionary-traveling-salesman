@@ -8,6 +8,10 @@ const int random_seed = 1337;
 const float OLD_GENERATION_RATIO = 0.5f;
 const float MUTATION_PROB = 0.01f;
 
+// Variaveis globais com os resultados
+struct generation* geracoes = NULL;
+struct cities* cidades = NULL;
+
 typedef char bool;
 
 // Gera numeros aleatorios como coordenadas x,y das cidades
@@ -89,10 +93,10 @@ int compara_distancias (const struct distancia_individuo* p1, const struct dista
     return -1;
 }
 
-int main(){
+int gera_dados(){
     // Guarda espaco para individuos e cidades
-    struct generation* geracoes = malloc(NUM_GENERATIONS*sizeof(struct generation));
-    struct cities* cidades = malloc(sizeof(struct cities));
+    geracoes = malloc(NUM_GENERATIONS*sizeof(struct generation));
+    cidades = malloc(sizeof(struct cities));
     if (geracoes == NULL || cidades == NULL) exit(-1);
 
     inicializa_cidades(cidades);
@@ -137,9 +141,12 @@ int main(){
         qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
     }
 
+}
+
+void limpa_dados(){
     free(geracoes);
     free(cidades);
     geracoes = NULL;
     cidades = NULL;
-    return 0;
+    return;
 }
