@@ -1,18 +1,36 @@
-#include "evo_structs.h"
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 
-const int NUM_GENERATIONS = 50;
-const int random_seed = 1337;
-const float OLD_GENERATION_RATIO = 0.5f;
-const float MUTATION_PROB = 0.01f;
+int NUM_CITIES = 10;                // quantidade de cidades (tamanho do problema)
+int NUM_GENERATIONS = 50;           // numero de geracoes utilizadas
+int NUM_INDIVIDUOS = 50;            // individuos em cada geracao
+float MUTATION_PROB = 0.01f;        // probabilidade de mutacao
+float OLD_GENERATION_RATIO = 0.5f;  // fracao da ultima geracao preservada
+int MAP_SIZE = 100;                 // tamanho do espaco para colocar cidades
+int random_seed = 1337;             // semente de numeros aleatorios
 
 // Variaveis globais com os resultados
 struct generation* geracoes = NULL;
 struct cities* cidades = NULL;
 
 typedef char bool;
+
+// A cidade sao cordenadas x,y da posicao no espaco
+struct cities{
+    int* x;
+    int* y;
+};
+
+// A rota sao indices das cidades em ordem de atravessamento
+struct route{
+    int *cities;
+};
+
+// Cada individuo eh uma rota, a geracao eh um conjunto de rotas
+struct generation{
+   struct route* individuos;
+};
 
 // Gera numeros aleatorios como coordenadas x,y das cidades
 void inicializa_cidades(struct cities* cidades){
@@ -47,7 +65,8 @@ void rota_aleatoria(struct route* rota){
 // Não é comutativa!
 void combina_individuos(const struct route* src1, const struct route* src2, struct route* dst){
     // Set booleano com as cidades ja utilizadas
-    bool utilizadas[NUM_CITIES] = {0};
+    bool *utilizadas;
+    utilizadas = calloc(NUM_CITIES, sizeof(bool));
     // Preenche primeira metade de src1
     for(int i = 0; i<(NUM_CITIES/2); i++){
         dst->cities[i] = src1->cities[i];
@@ -62,6 +81,7 @@ void combina_individuos(const struct route* src1, const struct route* src2, stru
             pos++;
         }
     }
+    free(utilizadas);
     return;
 }
 
@@ -93,12 +113,54 @@ int compara_distancias (const struct distancia_individuo* p1, const struct dista
     return -1;
 }
 
-int gera_dados(){
+void limpa_dados(){
+    if(geracoes == NULL) return;
+    free(geracoes[0].individuos[0].cities);
+    free(geracoes[0].individuos);
+    free(geracoes);
+    free(cidades->x);
+    free(cidades);
+    geracoes = NULL;
+    cidades = NULL;
+    return;
+}
+
+void aloca_memoria(){
+    // Limpa memoria se tiver sido usado antes
+    limpa_dados();
+
     // Guarda espaco para individuos e cidades
     geracoes = malloc(NUM_GENERATIONS*sizeof(struct generation));
     cidades = malloc(sizeof(struct cities));
     if (geracoes == NULL || cidades == NULL) exit(-1);
 
+    // Inicializa vetores do geracoes
+    geracoes[0].individuos = malloc(NUM_GENERATIONS*NUM_INDIVIDUOS*sizeof(struct route));
+    if(geracoes[0].individuos == NULL) exit(-1);
+    for(int i = 0; i < NUM_GENERATIONS; i++){
+        geracoes[i].individuos = geracoes[0].individuos + i*NUM_INDIVIDUOS;
+    }
+
+    // Inicializa vetores de cada individuo
+    geracoes[0].individuos[0].cities = malloc(NUM_GENERATIONS*NUM_INDIVIDUOS*NUM_CITIES*sizeof(int));
+    if(geracoes[0].individuos[0].cities == NULL) exit(-1);
+    for(int i = 0; i < NUM_GENERATIONS; i++){
+        for(int j = 0; j < NUM_INDIVIDUOS; j++){
+        geracoes[i].individuos[j].cities = geracoes[0].individuos[0].cities + (i*NUM_INDIVIDUOS+j)*NUM_CITIES;
+        }
+    }
+
+    // Inicializa vetores da cidade
+    cidades->x = malloc(2*NUM_CITIES*sizeof(int));
+    if(cidades->x == NULL) exit(-1);
+    cidades->y = cidades->x + NUM_CITIES;
+
+    return;
+}
+
+void gera_dados(){
+
+    aloca_memoria();
     inicializa_cidades(cidades);
 
     // Cria geracao inicial
@@ -140,13 +202,5 @@ int gera_dados(){
         }
         qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
     }
-
-}
-
-void limpa_dados(){
-    free(geracoes);
-    free(cidades);
-    geracoes = NULL;
-    cidades = NULL;
     return;
 }
