@@ -14,8 +14,24 @@
 ### desenvolvimanto da solução (pode ser desnecessario?)
   explicar detalhadamente o funcionamento da solução, explicar o codigo(ou não), qualquer coisa sobre o desenvolvimento vai aqui
   
-### manual
-  guia de como usar o programa para o professor
+## Setup
+  This section explain what you need to do to properly run the project. It's assumed you are using Linux, and it's not guaranteed this project will properly run in other operating systems.
+
+### Prerequisites
+You need to have the `make` tool installed. If you don't you can simply run the following if you are using a Debian-based distro:
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+If you are using a Linux distro not based on Debian, access the [official page](https://www.gnu.org/software/make/) to download the source.
+
+### Build the Library
+Before running the Jupyter Notebook we need to build the C library that will be used. To do that simply run the following commands in the project's root folder:
+```bash
+chmod 755 setup.sh
+./setup.sh
+```
+The first command gives execution permission to the file `setup.sh`, and the second executes it.
   
 ### resultados
   resultado da solução, graficos e dados.
