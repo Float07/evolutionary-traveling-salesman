@@ -107,7 +107,9 @@ struct distancia_individuo{
     int individuo;
 };
 
-int compara_distancias (const struct distancia_individuo* p1, const struct distancia_individuo* p2){
+int compara_distancias (const void* arg1, const void* arg2){
+    const struct distancia_individuo* p1 = (struct distancia_individuo*)arg1;
+    const struct distancia_individuo* p2 = (struct distancia_individuo*)arg2;
     if ( p1->distancia >   p2->distancia ) return 1;
     if ( p1->distancia ==  p2->distancia ) return 0;
     return -1;
