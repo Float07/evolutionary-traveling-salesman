@@ -1,0 +1,10 @@
+SO_FILE = lib.so
+
+all: evo_salesman.o main.o
+	gcc -shared -o libevo.so *.o
+
+evo_salesman.o: evo_salesman.c
+	gcc -c -Wall -fpic evo_salesman.c
+
+main.o: main.c
+	gcc -c -Wall -fpic main.c
