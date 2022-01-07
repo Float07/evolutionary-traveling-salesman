@@ -76,7 +76,9 @@ LIBEVO.limpa_memoria.restype = None
 # WRAPPER FUNCTIONS
 ####################################################################################################
 
-# Creates cities with random coordinates and runs the simulation
+# Creates cities with random coordinates and runs the evolutionary algorithm
+# This will set the data for cities and generations, which then can be copied using get_cities() and
+# get_generations(), or freed using clear_data()
 def run_simulation():
     # Run the simulation and get the result
     LIBEVO.realiza_simulacao()
