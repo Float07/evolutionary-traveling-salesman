@@ -83,8 +83,7 @@ def run_simulation():
     # Run the simulation and get the result
     LIBEVO.realiza_simulacao()
 
-# Gets the generations resulted from the simulation
-# Returns an array of generations
+# Returns an array containing the generations resulted from the simulation
 def get_generations():
     result = LIBEVO.test_simulation3d()
 
