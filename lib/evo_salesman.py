@@ -13,7 +13,7 @@ import pathlib
 ####################################################################################################
 
 # An individual is defined by a route between the cities
-# And a route is an array of integers that indicates in which order the individual went through the cities
+# And a route is a list of integers that indicates in which order the individual went through the cities
 # Each city is represented by an integer
 # Each individual belongs to a generation
 class Individual:
@@ -27,7 +27,7 @@ class Individual:
         return individual_string.rstrip()
 
 
-# A generation is defined by an array of individuals
+# A generation is defined by a list of individuals
 class Generation:
     def __init__(self, individuals) -> None:
         self.individuals = individuals
@@ -83,7 +83,7 @@ def run_simulation():
     # Run the simulation and get the result
     LIBEVO.realiza_simulacao()
 
-# Returns an array containing the generations resulted from the simulation
+# Returns a list containing the generations resulted from the simulation
 def get_generations():
     result = LIBEVO.test_simulation3d()
 
@@ -100,7 +100,7 @@ def get_generations():
 
     return generations
 
-#Returns an array containing the cities used in the simulation
+#Returns a list containing the cities used in the simulation
 def get_cities():
     cities_struct = LIBEVO.get_city_coordinates().contents
     cities = []
