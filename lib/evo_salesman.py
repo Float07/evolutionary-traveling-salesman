@@ -109,7 +109,7 @@ def get_cities():
     return cities
 
 
-# Clears the data allocated by the C program, freeing memory
+# Clears the data allocated by the C library, freeing memory
 def clear_data():
     LIBEVO.limpa_memoria()
 
