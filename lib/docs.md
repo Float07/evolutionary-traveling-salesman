@@ -16,7 +16,7 @@ TODO
 
 ## Clearing the Memory
 
-By getting the data as explained in the previous section, you are copying the data allocated by the C library. After that, you can tell the C library to clear this data, freeing memory space.
+By getting the data as explained in the previous section, you are copying the data allocated by the C library. After that, you can tell the C library to clear its data, freeing memory space.
 
 TODO
 
