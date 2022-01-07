@@ -21,10 +21,10 @@ class Individual:
         self.route = route
     
     def __str__(self) -> str:
-        str = ''
+        individual_string = ''
         for city in self.route:
-            str += str(city) + ' '
-        return str.rstrip()
+            individual_string += str(city) + ' '
+        return individual_string.rstrip()
 
 
 # A generation is defined by an array of individuals
@@ -33,10 +33,10 @@ class Generation:
         self.individuals = individuals
 
     def __str__(self) -> str:
-        str = ''
+        generation_string = ''
         for index, individual in enumerate(self.individuals):
-            str += 'Individual #' + str(index) + ': ' + str(individual) + '\n'
-        return str
+            generation_string += 'Individual #' + str(index) + ': ' + str(individual) + '\n'
+        return generation_string
 
 # Child class that interfaces with the C struct "cities"
 class CitiesStruct(ctypes.Structure):
@@ -48,6 +48,9 @@ class City:
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
+    
+    def __str__(self) -> str:
+        return '(x,y) = (' + str(self.x) + ',' + str(self.y) + ')'
 
 
 
@@ -64,6 +67,8 @@ LIBEVO = ctypes.CDLL(str(pathlib.Path(__file__).parent.resolve()) + "/src/libevo
 LIBEVO.test_simulation3d.restype = POINTER(POINTER(POINTER(ctypes.c_int)))
 # Set the return type as a pointer to CitiesSctruct
 LIBEVO.get_city_coordinates.restype = POINTER(CitiesStruct)
+# Set the return type as void
+LIBEVO.limpa_memoria.restype = None
 
 
 
@@ -106,7 +111,34 @@ def clear_data():
 
 
 ####################################################################################################
-# UTILITIES FUNCTIONS
+# UTILITIES FUNCTIONS (for debugging purposes)
 ####################################################################################################
 
+# Prints the paths taken by each individual in each generation in an array of generations
+def print_generations(generations):
+    for index, generation in enumerate(generations):
+        print('Generation #' + str(index) + ':\n' + str(generation))
 
+# Prints the coordinates of each city in an array of cities
+def print_cities(cities):
+    for index, city in enumerate(cities):
+        print('City #' + str(index) + ': ' + str(city))
+
+
+
+####################################################################################################
+# IF RUN AS THE MAIN PROGRAM (for debugging purposes)
+####################################################################################################
+
+if __name__ == '__main__':
+    generations = run_simulation()
+    cities = get_cities()
+    clear_data()
+    
+    print('GENERATIONS:')
+    print_generations(generations)
+
+    print('CITIES:')
+    print_cities(cities)
+
+    
