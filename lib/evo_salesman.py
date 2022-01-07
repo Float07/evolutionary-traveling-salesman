@@ -76,11 +76,14 @@ LIBEVO.limpa_memoria.restype = None
 # WRAPPER FUNCTIONS
 ####################################################################################################
 
-# Creates a random set of cities and runs the evolutionary algorithm
-# Returns an array of generations
+# Creates cities with random coordinates and runs the simulation
 def run_simulation():
     # Run the simulation and get the result
     LIBEVO.realiza_simulacao()
+
+# Gets the generations resulted from the simulation
+# Returns an array of generations
+def get_generations():
     result = LIBEVO.test_simulation3d()
 
     # Get the result to a list of generations
@@ -105,7 +108,7 @@ def get_cities():
     return cities
 
 
-# Clears the data allocated by the C program
+# Clears the data allocated by the C program (e.g. cities and generations), freeing memory
 def clear_data():
     LIBEVO.limpa_memoria()
 
@@ -131,7 +134,8 @@ def print_cities(cities):
 ####################################################################################################
 
 if __name__ == '__main__':
-    generations = run_simulation()
+    run_simulation()
+    generations = get_generations() 
     cities = get_cities()
     clear_data()
     
