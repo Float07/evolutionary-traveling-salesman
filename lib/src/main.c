@@ -89,14 +89,15 @@ float distancia_total(const struct route* rota, const struct cities* cidades){
     float distance = 0;
 
     int x0, y0, x1, y1;
-    x1 = cidades->x[0];
-    y1 = cidades->y[0];
-    for(int i = 1; i < NUM_CITIES; i++){
-        x0 = x1;
-        y0 = y1;
+    // Comeca pela ultima para fechar o circuito
+    x0 = cidades->x[NUM_CITIES-1];
+    y0 = cidades->y[NUM_CITIES-1];
+    for(int i = 0; i < NUM_CITIES; i++){
         x1 = cidades->x[rota->cities[i]];
         y1 = cidades->y[rota->cities[i]];
         distance += sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+        x0 = x1;
+        y0 = y1;
     }
 
     return distance;
