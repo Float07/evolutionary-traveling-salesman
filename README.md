@@ -9,7 +9,7 @@
   
 ### solução proposta
   **qual a nossa solução proposta, porque ela foi escolhida, como esperamos que ela desempenhe contra esse problema.**
-  a solução proposta é um um algoritimo evolutivo com uso de mutação, esse tipo de algoritimo foi estudado em classe de aula e ( coloque texte falando como ele é efetivo e porque[se existir explicação]) e por isso ele foi escolhido. experamos que ele diminua o tempo de solução e ainda encontra uma rota com otimização proxima de "perfeita"(talvez eu mude esse palavra).
+  a solução proposta é um um algoritimo evolutivo com uso de mutação que foi estudado em classe. ele foi escolhido pois é esperado que processos heuristicos bem aplicados possam criar soluções eficientes com um custo de processamento menor, mesmo que não seja a melhor resposta possivel. esperamos que ele diminua o tempo de processamento enquanto ainda encontra uma rota com otimização proxima da melhor possivel.
   
 ### desenvolvimanto da solução (pode ser desnecessario?)
   explicar detalhadamente o funcionamento da solução, explicar o codigo(ou não), qualquer coisa sobre o desenvolvimento vai aqui
