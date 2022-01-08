@@ -196,6 +196,15 @@ void gera_dados(){
             p2  = &geracoes[i].individuos[rand()%NUM_PRESERVADOS];
             dst = &geracoes[i].individuos[j];
             combina_individuos(p1,p2,dst);
+            // Realiza mutacao nos novos individuos
+            if( ((double)rand())/RAND_MAX < MUTATION_PROB){
+                int mut1, mut2, aux;
+                mut1 = rand() % NUM_CITIES;
+                mut2 = rand() % NUM_CITIES;
+                aux = dst->cities[mut1];
+                dst->cities[mut1] = dst->cities[mut2];
+                dst->cities[mut2] = aux;
+            }
         }
         // Ordena a nova geracao de acordo com a menor distancia
         for(int j = 0; j < NUM_INDIVIDUOS; j++){
