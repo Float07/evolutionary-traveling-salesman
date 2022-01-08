@@ -32,16 +32,6 @@ struct generation{
    struct route* individuos;
 };
 
-// Gera numeros aleatorios como coordenadas x,y das cidades
-void inicializa_cidades(struct cities* cidades){
-    srand(random_seed);
-    for(int i=0; i<NUM_CITIES; i++){
-        cidades->x[i] = rand() % MAP_SIZE;
-        cidades->y[i] = rand() % MAP_SIZE;
-    }
-    return;
-}
-
 // Cria uma rota aleatoria a partir de permutacoes da quantidade de cidades
 void rota_aleatoria(struct route* rota){
     // Preenche o vetor com numeros de [0, NUM_CITIES)
@@ -85,7 +75,7 @@ void combina_individuos(const struct route* src1, const struct route* src2, stru
     return;
 }
 
-float distancia_total(const struct route* rota, const struct cities* cidades){
+float distancia_total(const struct route* rota){
     float distance = 0;
 
     int x0, y0, x1, y1;
@@ -116,26 +106,30 @@ int compara_distancias (const void* arg1, const void* arg2){
     return -1;
 }
 
-void limpa_dados(){
+void limpa_dados_simulacao(){
     if(geracoes == NULL) return;
     free(geracoes[0].individuos[0].cities);
     free(geracoes[0].individuos);
     free(geracoes);
+    geracoes = NULL;
+    return;
+}
+
+void limpa_dados_cidades(){
+    if(cidades == NULL) return;
     free(cidades->x);
     free(cidades);
-    geracoes = NULL;
     cidades = NULL;
     return;
 }
 
-void aloca_memoria(){
+void aloca_memoria_simulacao(){
     // Limpa memoria se tiver sido usado antes
-    limpa_dados();
+    limpa_dados_simulacao();
 
-    // Guarda espaco para individuos e cidades
+    // Guarda espaco para individuos
     geracoes = malloc(NUM_GENERATIONS*sizeof(struct generation));
-    cidades = malloc(sizeof(struct cities));
-    if (geracoes == NULL || cidades == NULL) exit(-1);
+    if (geracoes == NULL) exit(-1);
 
     // Inicializa vetores do geracoes
     geracoes[0].individuos = malloc(NUM_GENERATIONS*NUM_INDIVIDUOS*sizeof(struct route));
@@ -153,6 +147,16 @@ void aloca_memoria(){
         }
     }
 
+    return;
+}
+
+void aloca_memoria_cidades(){
+    // Limpa memoria se tiver sido usado antes
+    limpa_dados_cidades();
+
+    // Guarda espaco para cidades
+    cidades = malloc(sizeof(struct cities));
+    if (cidades == NULL) exit(-1);
     // Inicializa vetores da cidade
     cidades->x = malloc(2*NUM_CITIES*sizeof(int));
     if(cidades->x == NULL) exit(-1);
@@ -161,10 +165,21 @@ void aloca_memoria(){
     return;
 }
 
-void gera_dados(){
+// Gera numeros aleatorios como coordenadas x,y das cidades
+void inicializa_cidades(){
+    aloca_memoria_cidades();
+    srand(random_seed);
+    for(int i=0; i<NUM_CITIES; i++){
+        cidades->x[i] = rand() % MAP_SIZE;
+        cidades->y[i] = rand() % MAP_SIZE;
+    }
+    return;
+}
 
-    aloca_memoria();
-    inicializa_cidades(cidades);
+
+void gera_dados(){
+    aloca_memoria_simulacao();
+    if (cidades == NULL) inicializa_cidades();
 
     // Cria geracao inicial
     for(int i = 0; i < NUM_INDIVIDUOS; i++){
@@ -174,7 +189,7 @@ void gera_dados(){
     // Calcula distancias e ordena
     struct distancia_individuo distancias[NUM_INDIVIDUOS];
     for(int i = 0; i < NUM_INDIVIDUOS; i++){
-        distancias[i].distancia = distancia_total(&geracoes[0].individuos[i], cidades);
+        distancias[i].distancia = distancia_total(&geracoes[0].individuos[i]);
         distancias[i].individuo = i;
     }
     qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
@@ -209,7 +224,7 @@ void gera_dados(){
         }
         // Ordena a nova geracao de acordo com a menor distancia
         for(int j = 0; j < NUM_INDIVIDUOS; j++){
-        distancias[j].distancia = distancia_total(&geracoes[i].individuos[j], cidades);
+        distancias[j].distancia = distancia_total(&geracoes[i].individuos[j]);
         distancias[j].individuo = j;
         }
         qsort(distancias, NUM_INDIVIDUOS, sizeof(struct distancia_individuo), compara_distancias);
