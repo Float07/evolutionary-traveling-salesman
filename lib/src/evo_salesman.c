@@ -9,8 +9,8 @@ extern float OLD_GENERATION_RATIO;
 extern int MAP_SIZE;
 extern int random_seed;
 
-extern void gera_dados(void);
-extern void limpa_dados(void);
+void gera_dados(void);
+void limpa_dados(void);
 
 void define_parametros(int num_cities, int num_generations, int num_individuos, float mutation_prob, float old_generation_ratio, int map_size, int rand_seed){
     NUM_CITIES = num_cities;
@@ -31,7 +31,7 @@ void limpa_memoria(){
     limpa_dados();
 }
 
-struct generation* get_generations(){
+int *** get_generations(){
     return (int***) geracoes;
 }
 
