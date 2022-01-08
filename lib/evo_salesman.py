@@ -5,6 +5,7 @@
 import ctypes
 from ctypes import POINTER
 import pathlib
+import random
 
 
 
@@ -57,18 +58,21 @@ class City:
 ####################################################################################################
 # GLOBAL VARIABLES
 ####################################################################################################
-NUM_CITIES = 10
-NUM_GENERATIONS = 50
-NUM_INDIVIDUALS = 50
+NUM_CITIES = -1
+NUM_GENERATIONS = -1
+NUM_INDIVIDUALS = -1
+MAP_SIZE = -1
 
 # Load the C library
 LIBEVO = ctypes.CDLL(str(pathlib.Path(__file__).parent.resolve()) + "/src/libevo.so")
+# Set the return type as void
+LIBEVO.define_parametros.restype = None
+LIBEVO.realiza_simulacao.restype = None
+LIBEVO.limpa_memoria.restype = None
 # Set the return type as a 3d int array
-LIBEVO.test_simulation3d.restype = POINTER(POINTER(POINTER(ctypes.c_int)))
+LIBEVO.get_generations.restype = POINTER(POINTER(POINTER(ctypes.c_int)))
 # Set the return type as a pointer to CitiesSctruct
 LIBEVO.get_city_coordinates.restype = POINTER(CitiesStruct)
-# Set the return type as void
-LIBEVO.limpa_memoria.restype = None
 
 
 
@@ -76,7 +80,36 @@ LIBEVO.limpa_memoria.restype = None
 # WRAPPER FUNCTIONS
 ####################################################################################################
 
-# Creates cities with random coordinates and runs the evolutionary simulation
+# Sets the parameters used for city generation and simulation
+def set_parameters(num_cities=10, num_generations=10, num_individuals=10, mutation_prob=0, 
+old_generation_ratio=0.5, map_size=100, rand_seed=-1):
+    # Set the global variables so they can be recovered later
+    global NUM_CITIES
+    global NUM_GENERATIONS
+    global NUM_INDIVIDUALS
+    global MAP_SIZE
+    NUM_CITIES = num_cities
+    NUM_GENERATIONS = num_generations
+    NUM_INDIVIDUALS = num_individuals
+    MAP_SIZE = map_size
+
+    # If received a negative rand_seed, generate a random number
+    if rand_seed < 0:
+        rand_seed = random.randint(1, 100000000)
+
+    # Set the parameters
+    num_cities_c = ctypes.c_int(10)
+    num_generations_c = ctypes.c_int(num_generations)
+    num_individuals_c = ctypes.c_int(num_individuals)
+    mutation_prob_c = ctypes.c_float(mutation_prob)
+    old_generation_ratio_c = ctypes.c_float(old_generation_ratio)
+    map_size_c = ctypes.c_int(map_size)
+    rand_seed_c = ctypes.c_int(rand_seed)
+    LIBEVO.define_parametros(num_cities_c, num_generations_c, num_individuals_c, mutation_prob_c,
+    old_generation_ratio_c, map_size_c, rand_seed_c)
+
+# Creates cities with random coordinates and runs the evolutionary simulation using the parameters
+# defined with set_parameters()
 # This will set the data for cities and generations, which then can be copied using get_cities() and
 # get_generations(), or freed using clear_data()
 def run_simulation():
@@ -85,7 +118,7 @@ def run_simulation():
 
 # Returns a list containing the generations resulted from the simulation
 def get_generations():
-    result = LIBEVO.test_simulation3d()
+    result = LIBEVO.get_generations()
 
     # Get the result to a list of generations
     generations = [] 
@@ -135,6 +168,7 @@ def print_cities(cities):
 ####################################################################################################
 
 if __name__ == '__main__':
+    set_parameters()
     run_simulation()
     generations = get_generations() 
     cities = get_cities()
