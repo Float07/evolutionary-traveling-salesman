@@ -69,6 +69,7 @@ LIBEVO = ctypes.CDLL(str(pathlib.Path(__file__).parent.resolve()) + "/src/libevo
 LIBEVO.define_parametros.restype = None
 LIBEVO.realiza_simulacao.restype = None
 LIBEVO.limpa_memoria.restype = None
+LIBEVO.cria_cidades.restype = None
 # Set the return type as a 3d int array
 LIBEVO.get_generations.restype = POINTER(POINTER(POINTER(ctypes.c_int)))
 # Set the return type as a pointer to CitiesSctruct
@@ -81,6 +82,8 @@ LIBEVO.get_city_coordinates.restype = POINTER(CitiesStruct)
 ####################################################################################################
 
 # Sets the parameters used for city generation and simulation
+# If this function is not run before create_cities() or run_simulation(), the default parameters
+# will be used
 def set_parameters(num_cities=10, num_generations=10, num_individuals=10, mutation_prob=0, 
 old_generation_ratio=0.5, map_size=100, rand_seed=-1):
     # Set the global variables so they can be recovered later
@@ -107,6 +110,12 @@ old_generation_ratio=0.5, map_size=100, rand_seed=-1):
     rand_seed_c = ctypes.c_int(rand_seed)
     LIBEVO.define_parametros(num_cities_c, num_generations_c, num_individuals_c, mutation_prob_c,
     old_generation_ratio_c, map_size_c, rand_seed_c)
+
+# Generates a set of cities to be used during simulation
+# The same cities will be used in multiple simulations if this function is not run between them
+# If this function is not run before run_simulation(), a set of cities will be automatically created
+def create_cities():
+    LIBEVO.cria_cidades() 
 
 # Creates cities with random coordinates and runs the evolutionary simulation using the parameters
 # defined with set_parameters()
@@ -169,6 +178,7 @@ def print_cities(cities):
 
 if __name__ == '__main__':
     set_parameters()
+    create_cities()
     run_simulation()
     generations = get_generations() 
     cities = get_cities()
