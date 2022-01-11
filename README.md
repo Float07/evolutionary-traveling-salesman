@@ -19,7 +19,37 @@
   
 ### desenvolvimanto da solução (pode ser desnecessario?)
   explicar detalhadamente o funcionamento da solução, explicar o codigo(ou não), qualquer coisa sobre o desenvolvimento vai aqui
-  
+
+## O Algoritmo
+
+### Organização dos dados
+
+No nosso algorítmo cada cidade é representada como uma tupla (x,y) que representa a posição da cidade em uma malha 2D. As cidades estão organizadas em um structure of arrays com as coordenadas x e y e são identificadas por seu índice nesse vetor.
+
+Os indivíduos, que representam uma solução do problema, são um vetor com alguma permutação de todas as cidades da lista. Essa permutação representa a ordem que as cidades são visitadas considerando um circuito fechado.
+
+### Combinação
+
+A combinação de dois indivíduos toma a primeira metade da rota do primeiro indivíduo e preenche as cidades que estão faltando na ordem do segundo, como mostra o esquema.
+
+Rota 1: [**4, 6, 3, 2, 8**, 1, 9, 5, 7, 0]
+
+Rota 2: [**0**, **1**, **9**, 3, **5**, 6, 2, 4, **7**, 8]
+
+Filho : [4, 6, 3, 2, 8, 0, 1, 9, 5, 7]
+
+Após essa combinação ainda existe uma probabilidade configurável de que realize-se permutações aleatórias, representando uma **mutação**.
+
+### Evolução
+
+A geração inicial do algorítmo é gerada a partir de rotas aleatórias com o algoritmo de *Fisher-Yates*.
+
+A geração então é ordenada em ordem crescente de distância total percorrida pela sua rota, sendo que uma fração configurável dessa lista ordenada é selecionada para a geração seguinte.
+
+Uma vez com os melhores indivíduos da geração anterior copiados, o resto do vetor é preenchido com combinações aleatórios desses melhores indivíduos.
+
+A ordenção dos melhores e geração de novos indivíduos se repete até que obtenha-se o número de gerações escolhido
+
 ## Setup
   This section explain what you need to do to properly run the project. It's assumed you are using Linux, and it's not guaranteed this project will properly run in other operating systems.
 
