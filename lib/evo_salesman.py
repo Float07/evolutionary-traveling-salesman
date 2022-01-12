@@ -3,6 +3,7 @@
 ####################################################################################################
 
 import ctypes
+import numpy as np
 from ctypes import POINTER
 import pathlib
 import random
@@ -12,6 +13,15 @@ import random
 ####################################################################################################
 # CLASSES DEFINITIONS
 ####################################################################################################
+
+# A city is defined by its x and y coordinates
+class City:
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
+    
+    def __str__(self) -> str:
+        return '(x,y) = (' + str(self.x) + ',' + str(self.y) + ')'
 
 # An individual is defined by a route between the cities
 # And a route is a list of integers that indicates in which order the individual went through the cities
@@ -26,6 +36,27 @@ class Individual:
         for city in self.route:
             individual_string += str(city) + ' '
         return individual_string.rstrip()
+
+    @property
+    def total_distance(self):
+        cities = get_cities()
+        distance = 0
+
+        for index, _ in enumerate(cities):
+            city1Index = self.route[index]
+            city2Index = self.route[0]
+            if index != len(cities) - 1:
+                city2Index = self.route[index + 1]
+            city1 = cities[city1Index]
+            city2 = cities[city2Index]
+
+            city1Array = np.array((city1.x, city1.y))
+            city2Array = np.array((city2.x, city2.y))
+            distance += np.linalg.norm(city1Array - city2Array)
+        
+        return distance
+        
+            
 
 
 # A generation is defined by a list of individuals
@@ -43,15 +74,6 @@ class Generation:
 class CitiesStruct(ctypes.Structure):
     _fields_ = [('x', POINTER(ctypes.c_int)),
                 ('y', POINTER(ctypes.c_int))]
-
-# A city is defined by its x and y coordinates
-class City:
-    def __init__(self, x, y) -> None:
-        self.x = x
-        self.y = y
-    
-    def __str__(self) -> str:
-        return '(x,y) = (' + str(self.x) + ',' + str(self.y) + ')'
 
 
 
