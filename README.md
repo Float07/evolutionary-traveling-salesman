@@ -1,5 +1,7 @@
 # Evolutionary Traveling Salesman
 
+Uma versão em portugês desse README está disponível [aqui](README_PT.md)
+
 ## Introduction
   For the *SSC0713 - Sistemas Evolutivos Aplicados a Robotica* coursework, we shall solve a problem using evolutional algorithms. We have chosen for our coursework the Traveling Salesman Problem and to solve it we intend to use an evolutional algorithm with mutation.
 ### Problem
