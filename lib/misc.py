@@ -21,10 +21,8 @@ def plot_cities(cities, map_size):
 
 def plot_best_distance_per_generation(generations):
     best_distances = []
-    x = list(range(len(generations)))
-    for generation in generations:
-        generation_distances = []
-        for individual in generation.individuals:
-            generation_distances.append(individual.total_distance)
-        best_distances.append(min(generation_distances))
+    x = list(range(len(generations) - 1))
+    for generation in generations[1:]:
+        best_distances.append(generation.individuals[0].total_distance)
+    plt.ylim(best_distances[-1] - 0.02 * best_distances[-1], best_distances[0] + 0.02 * best_distances[0])
     plt.bar(x, best_distances)
