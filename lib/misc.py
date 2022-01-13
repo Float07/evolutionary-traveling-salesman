@@ -23,5 +23,8 @@ def plot_best_distance_per_generation(generations):
     best_distances = []
     x = list(range(len(generations)))
     for generation in generations:
-        best_distances.append(generation.individuals[0].total_distance)
+        generation_distances = []
+        for individual in generation.individuals:
+            generation_distances.append(individual.total_distance)
+        best_distances.append(min(generation_distances))
     plt.bar(x, best_distances)
