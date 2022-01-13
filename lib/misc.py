@@ -18,6 +18,14 @@ def plot_cities(cities, map_size):
     plt.axis([0, map_size, 0,map_size])
     plt.show()
 
+def plot_path(num_cities,cities,indice):
+    path= np.arange(2*num_cities).reshape(2, num_cities)
+    for index in range(num_cities):
+        path[0][index]= cities[indice[index]].x
+        path[1][index]= cities[indice[index]].y
+    plt.plot( path[0], path[1], '-0')
+    plt.show()
+
 def plot_best_distance_per_generation(generations):
     best_distances = []
     x = list(range(len(generations) - 1))
