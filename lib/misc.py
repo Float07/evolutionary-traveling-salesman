@@ -26,7 +26,7 @@ def plot_route(cities,route):
         plot_route[1][index] = cities[route[index]].y
     plot_route[0][num_cities] = cities[route[0]].x
     plot_route[1][num_cities] = cities[route[0]].y
-    plt.plot( plot_route[0], plot_route[1], '-0')
+    plt.plot( plot_route[0], plot_route[1], '-o')
     plt.show()
 
 def plot_best_distance_per_generation(generations):
