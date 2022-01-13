@@ -8,7 +8,8 @@ import numpy as np
 ####################################################################################################
 # MISC FUNCTIONS
 ####################################################################################################
-def cidades(map_size,num_cities,cities):
+def plot_cities(cities, map_size):
+    num_cities = len(cities)
     arr=np.arange(2*num_cities).reshape(2, num_cities)
     for index in range(num_cities):
         arr[0][index]= cities[index].x
