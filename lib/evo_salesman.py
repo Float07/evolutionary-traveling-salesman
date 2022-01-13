@@ -44,9 +44,11 @@ class Individual:
 
         for index, _ in enumerate(cities):
             city1Index = self.route[index]
-            city2Index = self.route[0]
-            if index != len(cities) - 1:
-                city2Index = self.route[index + 1]
+            city2Index = None
+            if index == len(cities) - 1:
+                city2Index = self.route[0]
+            else:
+                city2Index = self.route[index + 1] 
             city1 = cities[city1Index]
             city2 = cities[city2Index]
 
@@ -123,7 +125,7 @@ old_generation_ratio=0.5, map_size=100, rand_seed=-1):
         rand_seed = random.randint(1, 100000000)
 
     # Set the parameters
-    num_cities_c = ctypes.c_int(10)
+    num_cities_c = ctypes.c_int(num_cities)
     num_generations_c = ctypes.c_int(num_generations)
     num_individuals_c = ctypes.c_int(num_individuals)
     mutation_prob_c = ctypes.c_float(mutation_prob)
