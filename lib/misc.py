@@ -25,4 +25,6 @@ def plot_best_distance_per_generation(generations):
     for generation in generations[1:]:
         best_distances.append(generation.individuals[0].total_distance)
     plt.ylim(best_distances[-1] - 0.02 * best_distances[-1], best_distances[0] + 0.02 * best_distances[0])
-    plt.bar(x, best_distances)
+    plt.xlabel('Generation')
+    plt.ylabel('Minimum Distance')
+    plt.plot(x, best_distances)
