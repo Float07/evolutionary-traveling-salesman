@@ -44,9 +44,11 @@ class Individual:
 
         for index, _ in enumerate(cities):
             city1Index = self.route[index]
-            city2Index = self.route[0]
-            if index != len(cities) - 1:
-                city2Index = self.route[index + 1]
+            city2Index = None
+            if index == len(cities) - 1:
+                city2Index = self.route[0]
+            else:
+                city2Index = self.route[index + 1] 
             city1 = cities[city1Index]
             city2 = cities[city2Index]
 
