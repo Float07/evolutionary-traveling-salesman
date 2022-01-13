@@ -18,7 +18,7 @@ def plot_cities(cities, map_size):
     plt.axis([0, map_size, 0,map_size])
     plt.show()
 
-def plot_path(cities,route):
+def plot_route(cities,route):
     num_cities = len(route)
     plot_route = np.arange(2*(num_cities+1)).reshape(2, num_cities+1)
     for index in range(num_cities):
