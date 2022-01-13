@@ -19,10 +19,12 @@ def plot_cities(cities, map_size):
     plt.show()
 
 def plot_path(num_cities,cities,indice):
-    path= np.arange(2*num_cities).reshape(2, num_cities)
+    path= np.arange(2*(num_cities+1)).reshape(2, num_cities+1)
     for index in range(num_cities):
         path[0][index]= cities[indice[index]].x
         path[1][index]= cities[indice[index]].y
+    path[0][num_cities]= cities[indice[0]].x
+    path[1][num_cities]= cities[indice[0]].y
     plt.plot( path[0], path[1], '-0')
     plt.show()
 
