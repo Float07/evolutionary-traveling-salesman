@@ -1,5 +1,7 @@
 # Evolutionary Traveling Salesman
 
+The video of us explaining our project can be found on [Youtube](https://youtu.be/53dAwzO7Ih0)
+
 Uma versão em portugês desse README está disponível [aqui](README_PT.md)
 
 ## Introduction
