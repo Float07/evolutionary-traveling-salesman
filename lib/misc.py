@@ -7,6 +7,7 @@ import numpy as np
 ####################################################################################################
 # MISC FUNCTIONS
 ####################################################################################################
+# Plots an array of cities
 def plot_cities(cities, map_size):
     num_cities = len(cities)
     arr=np.arange(2*num_cities).reshape(2, num_cities)
@@ -18,6 +19,7 @@ def plot_cities(cities, map_size):
     plt.axis([0, map_size, 0,map_size])
     plt.show()
 
+# Plots an array of cities and a route between them
 def plot_route(cities,route):
     num_cities = len(route)
     plot_route = np.arange(2*(num_cities+1)).reshape(2, num_cities+1)
@@ -29,6 +31,7 @@ def plot_route(cities,route):
     plt.plot( plot_route[0], plot_route[1], '-o')
     plt.show()
 
+# Plots the best distance for each generation in an array of generation
 def plot_best_distance_per_generation(generations):
     best_distances = []
     x = list(range(len(generations) - 1))
