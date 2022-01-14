@@ -3,14 +3,12 @@
 ## Introdução
   Para o trabalho da disciplina *SSC0713 - Sistemas Evolutivos Aplicados a Robotica* devemos solucionar um problema usando algoritimos evolutivos. Escolhemos para nosso trabalho o problema do caixeiro viajante e para resolve-lo pretendemos usar um algoritimo evolutivo com uso de mutação.
 ### Problema
-  **qual problema que vamos atacar, explicação precisa, porque ele é um problema**
   O problema do caixeiro viajante é um problema clásico da mátematica descrito a seguir:
   "dado um número de cidades e o custo de viajar de uma para a outra, requer-se a determinação da rota mais barata que visita cada cidade e então retorna para a primeira cidade".
   
   Para achar de forma exata a melhor rota, esse é um problema NP-dificil, ou seja o tempo para solucionalo cresce exponencialmete com o tamanho do problema e fazendo com que a solução por meio de algoritimos nâo heuristicos seja inviavel.
   
 ### Solução Proposta
-  **qual a nossa solução proposta, porque ela foi escolhida, como esperamos que ela desempenhe contra esse problema.**
   A solução proposta é um um algoritimo evolutivo com uso de mutação que foi estudado em classe. ele foi escolhido pois é esperado que processos heuristicos bem aplicados possam criar soluções eficientes com um custo de processamento menor, mesmo que não seja a melhor resposta possivel. esperamos que ele diminua o tempo de processamento enquanto ainda encontra uma rota com otimização proxima da melhor possivel.
 
 ## O Algoritmo
@@ -32,6 +30,12 @@ Rota 2: [**0**, **1**, **9**, 3, **5**, 6, 2, 4, **7**, 8]
 Filho : [4, 6, 3, 2, 8, 0, 1, 9, 5, 7]
 
 Após essa combinação ainda existe uma probabilidade configurável de que realize-se permutações aleatórias, representando uma **mutação**.
+
+### Implementação
+
+A implementação do algoritmo evolutivo foi feita em C e seu código fonte está disponível em [lib/src](lib/src). Ctypes foi usado para importar a biblioteca em C para Python, permitindo o fácil tratamento de dados.
+
+O módulo Python `evo_salesman.py` exporta várias funções wrappers para a da biblioteca C, permitindo acesso alto nível à biblioteca. Para mais informações sobre como usá-la leia a [documentação](lib/docs.md) ou veja nossos experimentos no [Jupyter Notebook](notebook.ipynb).
 
 ### Evolução
 
@@ -61,9 +65,6 @@ chmod 755 setup.sh
 ./setup.sh
 ```
 O primeiro comando dá permissão de execução para o arquivo `setup.sh`, e o segundo a executa.
-  
-### Resultados
-  Resultado da solução, graficos e dados.
-  
-### Considerações Finais
-  A solução foi uma boa solução? desempenho esperado X desempenho obitido. o problema foi solucionado? há alguma forma de melhorar a solução?
+
+### Rode o algoritmo
+Depois disso você pode criar seu próprio script usando o módulo `evo_salesman.py`. Siga [a documentação](lib/docs.md) para mais informações, ou apenas rode o [Jupyter Notebook](notebook.ipynb) neste repositório.

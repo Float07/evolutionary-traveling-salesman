@@ -5,14 +5,12 @@ Uma versão em portugês desse README está disponível [aqui](README_PT.md)
 ## Introduction
   For the *SSC0713 - Sistemas Evolutivos Aplicados a Robotica* coursework, we shall solve a problem using evolutional algorithms. We have chosen for our coursework the Traveling Salesman Problem and to solve it we intend to use an evolutional algorithm with mutation.
 ### Problem
-  **What problem will we will attack, precise explanation, why is it a problem**
   The traveling salesman problem is classic mathematic problen discribed as follow:
   "given a number of cities and the costs of travelling from one to the other, it is required to determine the cheapest route that visits each city once and then returns to the initial city". Find a exact solution for this problem is NP-dificult, meaning for a biger number of cities the time need to solve it make this approach unviable.
   
   To find the best route, this is a NP-Hard problem, that is the time to solve it grows exponentially with the size of the problem and that makes the solution with non-heuristic algorithms unviable.
   
 ### Proposed Solution
-  **What is our proposed solution, why was it chosen, how do we expect it to perform against this problem**
   The proposed soluction is a evolutionary algorithm whit usage of mutation, as was studied in class. it was chose because it is expected that a Heuristic process can find a good enough solution, even if is not the best, with less cost. we expect that our algorithm can solve the problem in less time while still find a optimal solution
   
   The proposed solution is an evolutionary algorithm with use of mutation that was studied in class. It was chosen because it is expected that well applied heuristic processes can create efficient solutions with a lower processing cost, even if it may not be the best possible response.
@@ -47,6 +45,12 @@ Once the best individuals from the previous generations are copied, the rest of 
 
 The ordering of the best and the creation of new individuals repeats untill we get the selected number of generations.
 
+### Implementation
+
+The implementation of the evolutionary algorithm was made in C and the source code is located in [lib/src](lib/src). Ctypes is used so we can import this C library into Python to easily treat and show the data. 
+
+The `evo_salesman.py` module exports several wrapper functions to the C library, allowing for high-level access without worrying with low-level details. For more information on how to use it read the [documentation](lib/docs.md) or see our experiments in the [Jupyter Notebook](notebook.ipynb).
+
 ## Setup
   This section explain what you need to do to properly run the project. It's assumed you are using Linux, and it's not guaranteed this project will properly run in other operating systems.
 
@@ -65,9 +69,6 @@ chmod 755 setup.sh
 ./setup.sh
 ```
 The first command gives execution permission to the file `setup.sh`, and the second executes it.
-  
-### Results
-  result of the solution, graphs and data.
-  
-### Final Considerations
-  Was the solution a good solution? Desired performance X Real performance. Was the problem solved? Any way to improve the solution?
+
+### Run the algorithm
+After this you can create your own Python script using the `evo_salesman.py` module. Follow along [the Documentation](lib/docs.md) to learn how to do this, or just run the [Jupyter Notebook](notebook.ipynb) in this project.
