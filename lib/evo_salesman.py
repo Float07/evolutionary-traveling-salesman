@@ -37,6 +37,7 @@ class Individual:
             individual_string += str(city) + ' '
         return individual_string.rstrip()
 
+    # The total distance of the route this individual takes
     @property
     def total_distance(self):
         cities = get_cities()
@@ -45,6 +46,7 @@ class Individual:
         for index, _ in enumerate(cities):
             city1Index = self.route[index]
             city2Index = None
+            # If city 1 is the last in the route, connects to the first city in the route
             if index == len(cities) - 1:
                 city2Index = self.route[0]
             else:
